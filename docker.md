@@ -15,13 +15,13 @@ docker images
 删除镜像
 
 ```
-docker rmi +image ID
+docker rmi image_id
 ```
 
 创建名为plumemo为指定镜像容器
 
 ```
-docker create -name plumemo +image ID
+docker create -name plumemo image_id
 ```
 
 启动容器
@@ -98,15 +98,15 @@ docker ps -a
 删除指定容器	-f是强制删除正在运行的容器
 
 ```
-docker rm -f +container ID
+docker rm -f container_id
 ```
 
 启动、停止和重启指定容器
 
 ```
-docker start+container ID
-docker stop +container ID
-docker restart +container ID
+docker start container_id
+docker stop container_id
+docker restart container_id
 
 -a, --attach=false         Attach STDOUT/STDERR and forward signals 启动一个容器并打印输出结果和错误
 -i, --interactive=false    Attach container‘s STDIN 启动一个容器并进入交互模式
