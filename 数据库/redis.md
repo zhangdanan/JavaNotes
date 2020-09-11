@@ -36,7 +36,9 @@ Redis 与其他 key - value 缓存产品有以下三个特点：
 
 
 
-# 2019-8-21-redis的安装（二）
+# redis的安装
+
+## msi安装
 
 ### 一、下载 Redis
 
@@ -87,7 +89,25 @@ Redis 服务器的缺省端口是 6379，而且只能本机访问。如果你想
 redis-cli -p 10000
 ```
 
+## zip安装
 
+下载Redis For window x64.zip，然后解压到指定目录，然后打开redis解压的根目录，安装和注册redis到window服务里，安装命令如下
+
+```
+redis-server.exe --service-install redis.windows.conf --loglevel verbose
+```
+
+启动服务命令
+
+```
+redis-server --service-start
+```
+
+关闭服务命令
+
+```
+redis-server --service-stop
+```
 
 
 
@@ -402,9 +422,9 @@ save 60 10000 （60 秒内有10000 次修改备份）
 遇到系统故障时,redis提供了数据恢复工具：redis-check-aof 和 redis-check-dump
 ```
 
+### 11.redis的启动命令
 
-
-# Jedis的使用
-
-<https://www.jianshu.com/p/a1038eed6d44>
+```
+redis-server.exe redis.windows.conf
+```
 
