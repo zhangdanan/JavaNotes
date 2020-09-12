@@ -36,9 +36,7 @@ Redis 与其他 key - value 缓存产品有以下三个特点：
 
 
 
-# redis的安装
-
-## msi安装
+# 2019-8-21-redis的安装（二）
 
 ### 一、下载 Redis
 
@@ -89,25 +87,7 @@ Redis 服务器的缺省端口是 6379，而且只能本机访问。如果你想
 redis-cli -p 10000
 ```
 
-## zip安装
 
-下载Redis For window x64.zip，然后解压到指定目录，然后打开redis解压的根目录，安装和注册redis到window服务里，安装命令如下
-
-```
-redis-server.exe --service-install redis.windows.conf --loglevel verbose
-```
-
-启动服务命令
-
-```
-redis-server --service-start
-```
-
-关闭服务命令
-
-```
-redis-server --service-stop
-```
 
 
 
@@ -246,19 +226,18 @@ zadd key score member
 ### 1.keys键操作
 
 ```
-exists key　　　　　　　　　　　　　 测试指定key是否存在
+exists key　　　　　　　　　测试指定key是否存在
 del key1 key2….keyN　　　　　　　　删除指定key
-type key　　　　　　　　　　　　　　返回指定key的value类型
-keys pattern　　　　　　　　　　　　返回指定模式的所有key
+type key　　　　　　　　　返回指定key的value类型
+keys pattern　　　　　　　返回指定模式的所有key
 rename oldkey newkey　　　　　　　改名字
-dbsize　　　　　　　　　　　　　　　返回当前数据路的key数量
-expire key seconds　　　　　　　　　为key指定过期时间
-ttl key　　　　　　　　　　　　　　　返回key的过期剩余秒数
+dbsize　　　　　　　　　　返回当前数据路的key数量
+expire key seconds　　　　　 为key指定过期时间
+ttl key　　　　　　　　　　返回key的过期剩余秒数
 select db-index　　　　　　　　　　　选择数据库
-move key db-index　　　　　　　　　把key从当前数据库移动到指定数据库
-flushdb　　　　　　　　　　　　　　删除当前数据库所有key
-flushall　　　　　　　　　　　　　　删除所有数据库中的所有key
-
+move key db-index　     把key从当前数据库移动到指定数据库
+flushdb　　　　　　　　　  删除当前数据库所有key
+flushall　　　　　　 　删除所有数据库中的所有key
 ```
 
 ### 2.string类型操作
@@ -422,9 +401,9 @@ save 60 10000 （60 秒内有10000 次修改备份）
 遇到系统故障时,redis提供了数据恢复工具：redis-check-aof 和 redis-check-dump
 ```
 
-### 11.redis的启动命令
 
-```
-redis-server.exe redis.windows.conf
-```
+
+# Jedis的使用
+
+<https://www.jianshu.com/p/a1038eed6d44>
 
