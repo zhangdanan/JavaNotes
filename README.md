@@ -45,5 +45,11 @@
 - [Chrome常用插件](https://github.com/zhangdanan/JavaNotes/blob/master/%E5%B7%A5%E5%85%B7/Chrome%E6%8F%92%E4%BB%B6.md)
 - [CentOS 7下启动、关闭、重启、查看MySql服务](https://github.com/zhangdanan/JavaNotes/blob/master/%E5%B7%A5%E5%85%B7/CentOS%207%E4%B8%8B%E5%90%AF%E5%8A%A8%E3%80%81%E5%85%B3%E9%97%AD%E3%80%81%E9%87%8D%E5%90%AF%E3%80%81%E6%9F%A5%E7%9C%8BMySQL%E6%9C%8D%E5%8A%A1.md)
 - [Linux](https://github.com/zhangdanan/JavaNotes/blob/master/%E5%B7%A5%E5%85%B7/linux.md)
+- [JWT](https://github.com/zhangdanan/JavaNotes/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/JWT.md)
+- [Linux(CentOS 7) 安装Nginx](https://github.com/zhangdanan/JavaNotes/blob/master/%E5%B7%A5%E5%85%B7/Linux%EF%BC%88CentOS7%EF%BC%89%E5%AE%89%E8%A3%85Nginx%EF%BC%88%E9%99%84%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%EF%BC%89.md)
+- [Linux安装jdk8](https://github.com/zhangdanan/JavaNotes/blob/master/%E5%B7%A5%E5%85%B7/linux%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85jdk8.0.md)
+- [Nginx](https://github.com/zhangdanan/JavaNotes/blob/master/%E5%B7%A5%E5%85%B7/nginx.md)
 
+## 中间件
 
+- [RocketMq的安装和启动](https://github.com/zhangdanan/JavaNotes/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/RocketMq.md)
