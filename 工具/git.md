@@ -70,6 +70,27 @@ ssh-keygen -t rsa -C "your_email@example.com"
 
 
 
+### 5.使用git回滚版本
+
+```
+//查看每次操作对于的commitid的账号
+git reflog    
+
+//本地端口回滚指定的版本，这种回滚是不可逆的，会导致之前的提交记录都没有了
+git reset --hard commitId
+
+//强制推送到远程分支
+git push -f
+
+//查看所有提交的版本号
+git log --oneline
+
+//git revert命令是撤销某次操作，而在此次操作之前和之后的提交记录都会保留
+git revert commitid
+```
+
+
+
 # 2019-4-23-git需要掌握的知识
 
 要掌握的问题：
