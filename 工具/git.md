@@ -68,8 +68,6 @@ ssh-keygen -t rsa -C "your_email@example.com"
 
 当git无法自动合并冲突时，应先解决冲突再提交，再合并**git status**查看冲突的文件**git log --graph**可以看到分支合并图
 
-
-
 ### 5.使用git回滚版本
 
 ```
@@ -87,6 +85,13 @@ git log --oneline
 
 //git revert命令是撤销某次操作，而在此次操作之前和之后的提交记录都会保留
 git revert commitid
+```
+
+### git从github上面拉取更新代码
+
+```
+git remote   //可以查看关联的远程仓库
+git remote -v   //可以查看关联的远程仓库的具体url
 ```
 
 
