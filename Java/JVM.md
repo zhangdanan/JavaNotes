@@ -388,3 +388,24 @@ G1的新生代收集跟ParNew类似，当新生代占用达到一定比例的时
 | 组合5    | Parallel Scavenge | Serial Old     | Parallel Scavenge策略主要是关注一个可控的吞吐量：应用程序运行时间 / (应用程序运行时间 + GC时间)，可见这会使得CPU的利用率尽可能的高，适用于后台持久运行的应用程序，而不适用于交互较多的应用程序。 |
 | 组合6    | Parallel Scavenge | Parallel Old   | Parallel Old是Serial Old的并行版本                           |
 | 组合7    | G1GC              | G1GC           | `-XX:+UnlockExperimentalVMOptions` `-XX:+UseG1GC` #开启；`-XX:MaxGCPauseMillis =50` #暂停时间目标；`-XX:GCPauseIntervalMillis =200` #暂停间隔目标；`-XX:+G1YoungGenSize=512m` #年轻代大小；`-XX:SurvivorRatio=6` #幸存区比例 |
+
+# JVM(GC分析 命令调优)
+
+# Class类文件结构
+
+### ConstantValue属性
+
+ConstantValue属性的作用是通知虚拟机自动为静态变量赋值，只有被static修饰的变量才可以使用这项属性。非static类型的变量的赋值是在实例构造器方法中进行的；tatic类型变量赋值分两种，在类构造其中赋值，或使用ConstantValue属性赋值。
+
+在实际的程序中，只有同时被final和static修饰的字段才有ConstantValue属性，且限于基本类型和String。编译时Javac将会为该常量生成ConstantValue属性，在类加载的准备阶段虚拟机便会根据ConstantValue为常量设置相应的值，如果该变量没有被final修饰，或者并非基本类型及字符串，则选择在类构造器中进行初始化。
+
+为什么ConstantValue的属性值只限于基本类型和string？
+1
+因为从常量池中只能引用到基本类型和String类型的字面量
+
+final、static、static final修饰的字段赋值的区别
+1
+static修饰的字段在加载过程中准备阶段被初始化，但是这个阶段只会赋值一个默认的值（0或者null而并非定义变量设置的值）初始化阶段在类构造器中才会赋值为变量定义的值。
+final修饰的字段在运行时被初始化，可以直接赋值，也可以在实例构造器中赋值，赋值后不可修改。
+static final修饰的字段在javac编译时生成comstantValue属性，在类加载的准备阶段直接把constantValue的值赋给该字段。
+可以理解为在编译期即把结果放入了常量池中。
