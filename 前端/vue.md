@@ -82,18 +82,6 @@ npm run dev执行项目
 
 然后命令行输入：vue ui
 
-
-
-
-
-
-
-
-
-
-
-
-
 # vue-cli
 
 ### 为什么使用vue-cli
@@ -158,3 +146,279 @@ i是install的缩写，
 
 ### cnpm下载安装
 
+# Vue基础
+
+### el挂载点
+
+vue会管理el选项命中的元素及其内部的后代元素，可以使用其他的选择器，但是建议选择ID选择器，
+
+可以使用其他的双标签，但是不能使用html和body。
+
+```
+<div id="app" class="app">
+    {{ message }}
+</div>
+
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        // el: '.app',
+        // el: 'div',
+        data: {
+            message: 'Hello Vue!'
+        }
+    })
+</script>
+```
+
+### data:数据对象
+
+Vue中用到的数据定义在data中，data中可以写复杂的数据，比如对象，数组。渲染复杂类型数据时，遵守js的语法就行，
+
+```
+<div id="app">
+  {{message}} {{school.name}}{{school.aihao}}
+    {{array[0]}}
+    {{array[1]}}
+    {{array[2]}}
+    {{array[3]}}
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: "我是张大楠",
+            school:{
+                name:"张大楠",
+                aihao:"看漂亮妹妹"
+            },
+            array:[1,2,3,4]
+        }
+    })
+</script>
+```
+
+### v-text指令
+
+- v-text指令的作用是：设置标签的内容
+- 默认写法会替换全部内容，使用差值表达式{{}}可以替换指定内容。
+- 内部支持写表达式
+
+```
+<div id="app">
+    <h2 v-text="message+'好帅'"></h2>
+    <h2 v-text="info"></h2>
+    {{message}}
+    {{info}}
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+           message:"张大楠",
+           info:"想看美女"
+        }
+    })
+</script>
+```
+
+### v-html指令
+
+- 设置标签的innerHTML
+- 内容中有html结构会被解析为标签
+- v-text指令无论内容是什么，只会解析为文本
+
+```
+<div id="app">
+    <h2>{{message}}</h2>
+    <h2>{{info}}</h2>
+    <h2 v-html="info"></h2>
+</div>
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            message:"张大楠",
+            info:"<a href='https://www.bilibili.com/'>B站</a>"
+        },
+    })
+</script>
+```
+
+### v-on指令
+
+- 为元素绑定事件
+
+```
+<div id="app">
+    <button v-on:click="greet">v-on绑定</button>
+    <button v-on:click="doit">v-on简写</button>
+    <input type="button" value="test" v-on:click="greet">
+    <input type="button" value="test" v-on:click="doit">
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        methods: {
+            greet: function () {
+                alert("做it")
+            },
+            doit: function () {
+                alert("这是啥")
+            },
+        }
+    })
+</script>
+```
+
+
+
+### v-if指令
+
+- v-if指令的作用是根据表达式的真假切换元素的显示状态
+
+- 根据表达式的真假，切换元素的显示和隐式（操控dom元素）
+- 表达式的值为true时，元素存在于dom树中，为false时，从dom树中移除
+
+```
+<div id="app">
+    <input type="button" value="显示" v-on:click="add">
+    <h2 v-if="isShow" >黑马程序员</h2>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data:{
+            isShow:false
+        },
+        methods: {
+            add: function () {
+                this.isShow=!this.isShow
+            },
+        }
+    })
+</script>
+```
+
+### v-show指令
+
+- v-show指令的作用是根据真假切换元素的显示状态
+- 原理是修改元素的display，实现显示隐藏
+- 指令后面的内容，最终都会解析为布尔值
+
+```
+<div id="app">
+    <input type="button" value="测试" v-on:click="changeIsShow">
+    <img v-show="isShow" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1141259048,554497535&fm=26&gp=0.jpg" alt="">
+</div>	
+<script>
+        var app=new Vue({
+            el:"#app",
+            data:{
+                isShow:false,
+                age:17
+            },
+            methods: {
+                changeIsShow: function () {
+                    this.isShow=!this.isShow;
+                },
+            }
+        })
+</script>
+```
+
+### v-bind指令
+
+- 设置元素的属性（比如src，title，class）
+- v-bind的作用是：为元素绑定属性
+- 完整写法为v-bind:属性名,简单写法是:属性名
+- 需要动态的增删class建议使用对象的形式
+
+```
+<div id="app">
+    <img v-bind:src="imgsrc" alt="">
+    <img v-bind:src="imgsrc" v-bind:title="istitle" v-bind:class="isActive?'active':''" @click="isActive" alt="">
+    <img v-bind:src="imgsrc" v-bind:title="istitle" v-bind:class="{active:isActive}" @click="isActive" alt="">
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            imgsrc:"https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1141259048,554497535&fm=26&gp=0.jpg",
+            istitle:"zhangdanan",
+            isActive:false,
+        },
+        methods:{
+            isActive:function () {
+                this.isActive=!this.isActive;
+            }
+        }
+    })
+</script>
+```
+
+### v-for指令
+
+- v-for指令的作用是根据数据生成列表结构
+- 数组经常跟v-for结合使用
+- 语法为（item，index）in 数据
+
+```
+<div id="app">
+    <ul>
+        <li v-for="(item,index) in array">{{item}}</li>
+    </ul>
+    <ul>
+        <li v-for="(obj,index) in object">{{obj.name}}</li>
+    </ul>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            array:["zhang","wang","li","zhou","xiang"],
+            object:[
+                {name:"zhangdanan"},
+                {name:"haoshuai"}
+            ]
+        }
+    })
+</script>
+```
+
+### v-model
+
+- v-model指令的作用是便捷的设置和获取表单元素的值
+- 绑定的数据会和表单元素值相关联
+
+```
+<div id="app">
+    <input type="button" value="修改message" @click="setM">
+    <input type="text" v-model="message" @keyup.enter="getM">
+    {{message}}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            message:"张大楠最帅"
+        },
+        methods:{
+            getM:function () {
+                alert(this.message);
+            },
+            setM:function () {
+
+                this.message="张小楠";
+            }
+        }
+    })
+</script>
+```
+
+### axios使用

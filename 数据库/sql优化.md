@@ -1,0 +1,1 @@
+1.查询SQL尽量不要使用select *    而是select具体字段
