@@ -88,6 +88,23 @@ nohup java -jar 你的jar命名.jar > logs.log &
 sudo -i 之后输入密码即可
 ```
 
+```
+// 以用户为主的格式来显示所有的进程
+　　ps aux
+// 搜寻所有含有tomcat进程的详细信息并打印在屏幕上.（“| ”是管道符，管道符左边命令的输出就会作为管道符右边命令的输入）
+　ps aux | grep tomcat
+// 以用户为主的格式来显示所有的进程并通过less分页显示，按q退出，按h进入帮助
+　　ps aux | less
+　　// 显示进程信息
+　　ps -A
+　　// 显示root进程用户信息
+　　ps -u root
+　　// 显示所有命令，连带命令行
+　　ps -ef
+```
+
+
+
 # window上传文件到linux
 
 Centos中使用lrzsz
@@ -300,6 +317,16 @@ rm -rf /test/file1
 
 # Linux运行jar包
 
+查看jar命令
+
+```
+ps -ef|grep xxx.jar
+ps aux|grep xxx.jar
+
+pid号为123，杀掉命令为
+kill -9 123
+```
+
 这里&表示后台运行，ssh窗口不被锁定，但是Linux系统关闭窗口时，程序还是会退出
 
 ```
@@ -318,3 +345,98 @@ nohup java-jar xxx.jar &
 nohup java-jar xxx.jar>/usr/local/test.txt&
 ```
 
+# Linux运行Vue项目
+
+### 1.部署Nginx
+
+不再重复
+
+### 2.Vue打包
+
+```
+npm run build
+```
+
+### 3.讲打包后的dist文件夹上传至服务器
+
+> 本地项目为/usr/local/webapp
+
+### 4.修改niginx的conf文件
+
+```
+#修改如下
+server {
+  listen 80;
+  server_name localhost;
+
+  # 注意设定 root路径是有dist的
+  location / {
+    root /usr/local/webapp/dist;
+    index /index.html;
+  }
+
+  #跨域 ip和port自行替换
+  location /adminApi {
+    proxy_pass http://ip:port;
+  }
+
+}
+```
+
+### 5.使配置生效
+
+```
+sbin/nginx -s reload
+sbin/nginx -s stop
+sbin/nginx
+```
+
+### 6.访问ip地址
+
+# Linux查看端口状态
+
+**netstat命令各个参数说明如下：**
+
+　　**-t : 指明显示TCP端口**
+
+　　**-u : 指明显示UDP端口**
+
+　　**-l : 仅显示监听套接字(所谓套接字就是使应用程序能够读写与收发通讯协议(protocol)与资料的程序)**
+
+　　**-p : 显示进程标识符和程序名称，每一个套接字/端口都属于一个程序。**
+
+　　**-n : 不进行DNS轮询，显示IP(可以加速操作)**
+
+**即可显示当前服务器上所有端口及进程服务，于grep结合可查看某个具体端口及服务情况··**
+
+```
+netstat -ntlp  //查看当前所有tcp端口
+
+netstat -ntulp |grep 80  //查看所有80端口使用情况
+
+netstat -an | grep 3306  //查看所有3306端口使用情况
+
+查看一台服务器上面哪些服务及端口
+netstat -lanp
+
+查看一个服务有几个端口。比如要查看mysqld
+
+ps -ef |grep mysqld
+
+查看某一端口的连接数量,比如3306端口
+
+netstat -pnt |grep :3306 |wc
+
+查看某一端口的连接客户端IP 比如3306端口
+
+netstat -anp |grep 3306
+
+netstat -an 查看网络端口 
+
+lsof -i :port，使用lsof -i :port就能看见所指定端口运行的程序，同时还有当前连接。 
+
+nmap 端口扫描
+netstat -nupl  (UDP类型的端口)
+netstat -ntpl  (TCP类型的端口)
+netstat -anp 显示系统端口使用情况
+```
