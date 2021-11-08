@@ -1459,8 +1459,42 @@ GROUP BY column_name;
 JOIN 按照功能大致分为如下三类：
 
 - **INNER JOIN（内连接,或等值连接）**：获取两个表中字段匹配关系的记录。
+
 - **LEFT JOIN（左连接）：**获取左表所有记录，即使右表没有对应匹配的记录。
+
 - **RIGHT JOIN（右连接）：** 与 LEFT JOIN 相反，用于获取右表所有记录，即使左表没有对应匹配的记录。
+
+  例子如下：两张表结构如下
+
+  ![image-20210404171818636](https://i.loli.net/2021/04/04/pZri4Tx2GqdtJ1h.png)
+
+  ![image-20210404171841167](https://i.loli.net/2021/04/04/EHTNS6Lu57RFsCe.png)
+
+
+
+内连接：
+
+```
+ SELECT boy.hid,boy.bname,girl.gname FROM boy INNER JOIN girl ON girl.hid = boy.hid;
+```
+
+![image-20210404172007337](https://i.loli.net/2021/04/04/GaIUHSBZm4yzMv3.png)
+
+左连接：
+
+```
+SELECT boy.hid,boy.bname,girl.gname FROM boy LEFT JOIN girl ON girl.hid = boy.hid;
+```
+
+![image-20210404172040334](https://i.loli.net/2021/04/04/FZ7EodUcP2Swavb.png)
+
+右连接：
+
+```
+SELECT boy.hid,boy.bname,girl.gname FROM boy RIGHT JOIN girl ON girl.hid = boy.hid;
+```
+
+![image-20210404172121106](https://i.loli.net/2021/04/04/fmaB3jucoyK12AI.png)
 
 # limit的使用
 

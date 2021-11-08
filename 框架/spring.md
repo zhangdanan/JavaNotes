@@ -1,6 +1,4 @@
-# 2019-4-24-s
-
-# pring学习一（spring概述）
+# Spring学习一（spring概述）
 
 ### 如何去学习
 
@@ -104,7 +102,7 @@ spring体系结构图如下：
 
 
 
-# 2019-4-25-spring学习二（springIOC容器）
+# Spring学习二（springIOC容器）
 
 ### 接口及面向接口编程
 
@@ -204,7 +202,7 @@ spring体系结构图如下：
 
 
 
-# 2019-4-24-spring学习三（spring Bean管理）
+# Spring学习三（spring Bean管理）
 
 ### 什么是Spring Beans
 
@@ -319,7 +317,7 @@ bean整个生命周期有定义---初始化---使用-----销毁
 - Session：同上，每次HTTP请求创建，当前session内有效（仅在wenb项目中能用）
 - Global session：基于portlet的web中有效，如果是在web中，同session（仅在web项目能用）
 
-# 2019-4-24-spring学习四（springAOP）
+# Spring学习四（springAOP）
 
 ### 面向切面编程
 
@@ -371,11 +369,7 @@ bean整个生命周期有定义---初始化---使用-----销毁
 
 ### AOP开源运用
 
-
-
 # 2019-4-24-spring学习五（spring基于AspectJ的AOP开发）
-
-## 
 
 # 2019-4-24-spring学习六（JDBC Template）
 
@@ -383,3 +377,14 @@ bean整个生命周期有定义---初始化---使用-----销毁
 
 <https://zhuanlan.zhihu.com/p/37108469>
 
+# Spring的一些注解
+
+- @Required：适用于bean属性的setter方法，它表明受影响的bean属性在配置是必须放在xml配置文件中，否则      容器会抛出一个BeanInitializationException异常
+- @Autowired  ：
+  -  setter方法中的@Autowired当spring遇到一个在setter方法中使用的@Autowired注解，它会在方法红视图执行byType自动连接
+  - 属性中的@Autowired他可以在属性中使用@Autowired注释来除去setter方法，当时使用为自动连接属性传递的时候，spring会将这些传递过来的值或者引用自动分配给那些属性
+  - 构造函数中的@Autowired在构造函数中使用@Autowired，一个构造函数@Autowired说明当创建bean时，即使在xml文件中没有使用元素配置bean，构造函数也会自动连接
+- @Qualifier：当你创建多个具有相同类型的bean时，并且想要用一个属性只为他们其中的一个进行装配，这种情况下，你可以使用@Qualifier注释和@Autowired注释通过指定哪一个真正的bean将会被装配来消除混乱，
+- @Configuration：带有这个注释的类表示这个类可以使用spring ioc容器作为bean定义的来源
+- @Bean： @Bean注解告诉spring，一个带有@Bean的注解方法将返回一个对象，该对象应该被注册为在spring应用程序上下文中的bean
+- @Import：该注解允许从另一个配置类中加载@Bean定义

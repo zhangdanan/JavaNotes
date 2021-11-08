@@ -1,0 +1,127 @@
+## 如何正确控制springboot中bean的加载顺序
+
+#### 1. 使用@DependsOn
+
+`@DependsOn`注解可以用来控制bean的创建顺序，该注解用于声明当前bean依赖于另外一个bean。所依赖的bean会被容器确保在当前bean实例化之前被实例化。
+
+示例：
+
+```
+@Configuration
+public class BeanOrderConfiguration {
+    @Bean
+    @DependsOn("beanB")
+    public BeanA beanA(){
+        System.out.println("bean A init");
+        return new BeanA();
+    }
+    @Bean
+    public BeanB beanB(){
+        System.out.println("bean B init");
+        return new BeanB();
+    }
+    @Bean
+    @DependsOn({"beanD","beanE"})
+    public BeanC beanC(){
+        System.out.println("bean C init");
+        return new BeanC();
+    }
+    @Bean
+    @DependsOn("beanE")
+    public BeanD beanD(){
+        System.out.println("bean D init");
+        return new BeanD();
+    }
+    @Bean
+    public BeanE beanE(){
+        System.out.println("bean E init");
+        return new BeanE();
+    }
+}
+```
+
+运行结果：
+
+```
+bean B init
+bean A init
+bean E init
+bean D init
+bean C init
+```
+
+@DependsOn的使用：
+
+- 直接或者间接标注在带有@Component注解的类上面
+- 直接或者间接标注在带有@Bean注解的方法上面
+- 使用@DependsOn注解到类层面仅仅在使用component-scanning方式时才有效，如果带有@DependsOn注解的类通过XML方式使用，该注解将会被忽略，<bean depends-on="...."/>这种方式才会生效
+
+#### 2.参数注入
+
+在@Bean标注的方法上，如果你传入了参数，springboot会自动为这个参数在spring上下文里寻找这个类型的引用，并先初始化这个类的实例。
+
+利用这个特性，我们也可以控制bean的加载顺序
+
+示例：
+
+```
+@Bean
+public BeanA beanA(BeanB demoB){
+  System.out.println("bean A init");
+  return new BeanA();
+}
+ 
+ 
+@Bean
+public BeanB beanB(){
+  System.out.println("bean B init");
+  return new BeanB();
+}
+```
+
+以上结果，beanB先于beanA被初始化加载
+
+需要注意的是，springboot会按照类型去寻找，如果这个类型有多个实例被注册到spring上下文，那你就需要加上@Qualifier("Bean的名称")来指定
+
+#### 3.利用bean的生命周期中的扩展点
+
+#### 4.@AutoConfigureOrder
+
+@AutoConfigureOrder只能改变外部依赖的@Configuration的顺序，如果理解什么是外部依赖呢，
+
+能被你工程内部scan的包，都是内部的Configuration，而spring引入内部的Configuration都是通过spring特有的spi文件：spring.factories
+
+换句话说，@AutoConfigureOrder能改变spring.factories中的@Configuration的顺序
+
+```
+@Configuration
+@AutoConfigureOrder(10)
+public class BeanOrderConfiguration1 {
+    @Bean
+    public BeanA beanA(){
+        System.out.println("bean A init");
+        return new BeanA();
+    }
+}
+ 
+ 
+@Configuration
+@AutoConfigureOrder(1)
+public class BeanOrderConfiguration2 {
+    @Bean
+    public BeanB beanB(){
+        System.out.println("bean B init");
+        return new BeanB();
+    }
+}
+```
+
+spring.factories:
+
+```
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.example.demo.BeanOrderConfiguration1,\
+  com.example.demo.BeanOrderConfiguration2
+```
+
+**注意：执行优先级别根据数字决定，数字越小，越优先加载，负数也可以**

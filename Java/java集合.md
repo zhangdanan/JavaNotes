@@ -30,6 +30,88 @@ Map
 - LinkedHashMap： LinkedHashMap 继承自 HashMap，所以它的底层仍然是基于拉链式散列结构即由数组和链表或红黑树组成。另外，LinkedHashMap 在上面结构的基础上，增加了一条双向链表，使得上面的结构可以保持键值对的插入顺序。同时通过对链表进行相应的操作，实现了访问顺序相关逻辑。
 - Hashtable：数组+链表组成，数组是HashMap的主体，链表则是为了解决哈希冲突存在的。
 
+# 区别
+
+### 2.List
+
+- Arraylist：Object[]数组
+- Vector：Object[]数组
+- LinkedList：双向链表(JDK1.6之前为循环链表，JDK1.7取消了循环 )
+
+#### 2.1Arraylist和Vector的区别
+
+- Arraylist是list的主要实现类，适用于频繁的查找工作，线程不安全
+- Vector线程安全的
+
+#### 2.2Arraylist和LinkedList区别
+
+1. 是否保证线程安全：Arraylist和LinkedList都是不同步的，都不是线程安全的。
+2. 底层数据结构：Arraylist底层是Object数组，LinkedList底层是双向链表
+3. 插入和删除是否受元素位置的影响：Arraylist采用数组存储，所以插入和删除元素的时间复杂度受元素位置的影响。LinkedList采用链表存储，对于add(E e)方法的插入、删除元素时间复杂度不受元素位置的影响，近似O(1),如果在指定位置插入和删除元素的话，时间复杂度为O(n)
+4. 是否支持快速随机访问：Arraylist支持，LinkedList不支持
+5. 内存空间占用：Arraylist的空间浪费主要体现在list列表的结尾会预留一定的容量空间，Linkedlist的空间花费则体现在它的每一个元素都需要消耗比ArrayList更多的空间（因为要存放直接后继和直接前驱以及数据）
+
+### 3.Set
+
+#### 3.1HashSet、LinkedHashSet和TreeSet三者的区别
+
+- HashSet是Set接口的主要实现类，HashSet的底层是HashMap,线程不安全，可以存储null值
+- LinkedHashSet是HashSet的子类，能够按照添加的顺序遍历；
+- TreeSet底层使用红黑树，能够按照添加元素的顺序进行遍历，排序的方式由自然排序和定制排序
+
+#### 3.2无序性和不可重复性的含义是什么
+
+1. 无序性：无序性不等于随机性，无序性是指存储的数据在底层数组中并非按照数组索引的顺序添加，而是根据数据的哈希值决定的
+2. 不可重复性：不可重复性是指添加的元素equals()判断时，返回false，需要同时重写equals()方法和HashCode()方法
+
+### 4.Map
+
+#### 4.1HashMap和Hashtable的区别
+
+-  线程安全性：HashMap是非线程安全，Hashtable是线程安全的。Hashtable内部的方法都加上了synchronized
+-  效率：因为线程安全的问题，HashMap要比Hashtable效率高一点
+-  对NULL key和NULL value的支持：HashMap可以存储null的key和value，但null作为键只能有一个，null作为值可以有多个，HashTable不允许有null键和null值，否则会抛出NullPointerException
+-  初始容量大小和每次扩充容量大小的不同：
+   - 创建时如果不指定初始容量，HashTable默认的初始大小为11，之后每次扩容，容量会变成原来的2n+1，HashMa默认的初始大小为16，HashMap默认的初始化大小为16，之后每次扩容，容量会变为原来的2倍
+   - 创建时如果指定初始容量，那么HashTable会直接使用你给定的大小，而HashMap会将其扩充为2的幂次方大小
+-  底层数据：JDK1.8以后的HashMap在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为8）（将链表转换为红黑树前会判断，如果当前数组的长度小于64，那么会选择先进行数组扩容，而不是转换为红黑树）时，将链表转换为红黑树，以减少搜索时间，Hashtable没有这样的机制。
+
+#### 4.2HashMap和HashSet区别
+
+HashSet的底层是基于HashMap实现的，HashSet的源码非常少，除了clone()、writeObject()、readObject()是HashSet自己实现的，其他的都是直接调用HashMap中的方法。
+
+|          HashMap          |                           HashSet                            |
+| :-----------------------: | :----------------------------------------------------------: |
+|       实现了Map接口       |                         实现Set接口                          |
+|        存储键值对         |                          仅存储对象                          |
+| 调用put()向map中添加元素  |                 调用add()方法向Set中添加元素                 |
+| HashMap使用键计算hashcode | HashSet使用成员对象来计算hashcode值，对于两个对象来说hashcode可能相同，所以equals()方法用来判断对象的相等性 |
+
+#### 4.3HashMap和TreeMap的区别
+
+TreeMap和HashMap都继承了AbstractMap，但是需要注意的是TreeMap它还实现了NavigableMap接口和SortedMap接口
+
+实现NavigableMap接口让TreeMap有了对集合内元素的搜索的能力。
+
+实现SortedMap接口让TreeMap有了对集合中的元素根据键排序的能力，默认是按key的升序排序，不过也可以指定排序的比较器。
+
+所以说，相对于HashMap来说TreeMap主要多了对集合中的元素根据键排序的能力以及对集合内元素的搜索的能力。
+
+##### hashcode()与equals()的相关规定
+
+1. 如果两个对象相等，则hashcode一定也是相同的
+2. 两个对象相等，对两个equals方法返回true
+3. 两个对象有相同的hashcode值，它们也不一定是相等的。
+4. equals方法被覆盖过，则hashcode方法也必须被覆盖
+
+##### ==与equals的区别
+
+对于基本类型来说，==比较的是值是否相等
+
+对于引用类型来说，==比较的是两个引用是否指向同一个对象地址（两者在内存中存放的地址（堆内存地址）是否指向同一个地方）
+
+对于引用类型来说，equals如果没有被重写，对比他们的地址是否相等，如果equals方法被重写，则比较的是地址里的内容
+
 # ArrayList源码解析
 
 ## 1.概述
