@@ -1,74 +1,137 @@
+### 学习目标
+
+要掌握的问题：
+
+- 什么是Git以及Git的工作原理
+- Git的常用命令Best Practise（避坑教学）
+- Git冲突是怎么引起的，如何解决
+- Git flow规范团队git使用教程
+
 ### 1.秘钥配置
 
-首先，要有ssh秘钥，在git命令行里面输入**ssh keygen**，如何一直next下去，找到你的用户所在位置有一个.ssh文件夹里，有两个文件id_rsa私钥，id_rsa.pub公钥，把公钥添加到github或者是私有git服务器上
+想要本地推送到远程仓库或者是克隆仓库，需要ssh密钥
+
+**查看ssh**
+
+```
+查看电脑是否存在id_rsa.pub
+cd ~/.ssh
+如果不存在则会提示No such file or directory 否则会自动进入目录，用ls就可以看到
+ls
+id_rsa  id_rsa.pub
+```
 
 **创建一个SSH key**
 
 ```
 ssh-keygen -t rsa -C "your_email@example.com"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/c/Users/user/.ssh/id_rsa)://可以指定⽬
+录也可以不指定⽬录。直接回⻋
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again://可以不输⼊密码，直接回⻋，以后每次push就不⽤输⼊密码
+Your identification has been saved in /c/Users/user/.ssh/id_rsa.
+Your public key has been saved in /c/Users/user/.ssh/id_rsa.pub.
+The key fingerprint is:
+这⾥是⽣成的key fingerprint
+The key's randomart image is:
+这⾥是⽣成的key's randomart image
+此时创建ssh成功
 ```
 
-### 2.更新远程仓库的代码
+### 2.git常用命令
 
-对于如何更新git服务器上的代码
+**创建版本库**
 
-首先把仓库克隆下来**git clone** [ssh://git@192.168.85.209:10022/hxy1993/develope-code.git](ssh://git@192.168.85.209:10022/hxy1993/develope-code.git)
+```
+git init
+git add .   /git add <file name>
+git commit -m "****" //说明修改内容
+```
 
-然后进入你克隆的仓库里面进行操作
+**仓库克隆**
 
-**git add .**添加所有的文件夹到缓存区
+```
+git clone xxxxx.git    //默认是main分支
+git clone -b <branch_name>  xxxxxx.git   //克隆特定分支
+```
 
-**git commit -m “注释”**提交到分支master下
+**远程推送**
 
-**git push -u origin master** 
+```
+git remote add origin xxxxx.git
+git push -u origin <branch_name>
+```
 
-把你的代码push到远程仓库上面如果没有关联远程仓库，请使用命令**git remote add origin**  [ssh://git@192.168.85.209:10022/hxy1993/develope-code.git](ssh://git@192.168.85.209:10022/hxy1993/develope-code.git)
+删除远程分支
 
-### 3.创建分支
+```
+git push origin -d <branch_name>
+```
 
-`git checkout -b dev`**创建dev分支**
+删除本地分支
 
-`git branch`**显示现在所在分支**
+```
+git branch -D <branch_name>
+```
 
-`git checkout master`**切换到master分支**
+查看本地分支和远程分支
 
-`git push origin dev`**提交该分支到远程仓库**
+```
+git branch      //查看本地分支
+git branch -a   //查看远程仓库和本地所有分支
+```
 
-`git brach -d dev`**删除分支**
+创建分支
 
-`git branch --set-upstream-to=origin/dev`**设置git push.pull默认的提交获取分支**
+```
+git checkout -b <branch_name>    //创建并切换到当前分支
+等同于
+git branch <branch_name>
+git checkout <branch_name>
+```
 
-`git branch --unset-upstream master`**取消对master的跟踪**
+切换当前分支
 
-### 4.别的命令
+```
+git checkout <branch_name>
+```
 
-`git status`**显示工作区状态**
+其他命令
 
-`git init`**初始化仓库**
+```
+git branch --set-upstream-to=origin/dev     //设置git push.pull默认的提交获取分支
 
-`git log`**日志功能**
+git branch --unset-upstream master      //取消对master的跟踪
 
-`git push origin master`**将本地master分支的最新修改推送到远程仓库**
+git status        //显示工作区状态
 
-`git merge dev`**合并并指定分支到当前分支**
+git init         //初始化仓库
 
-`git stash`**把当前的工作现场储藏起来，以备以后继续合作**
+git log          //日志功能
 
-`git stash list`**查看隐藏的工作区**
+git merge dev      //合并并指定分支到当前分支
 
-`git checkout -b branch-name origin/branch-name`**在本地创建和远程分支对应的分支**
+git stash         //把当前的工作现场储藏起来，以备以后继续合作
 
-`git branch --set-upstream branch-name origin/branch-name`**建立本地分支和远程分支的关联**
+git stash list     //查看隐藏的工作区
 
-`git pul`**抓取远程的提交，或抓取分支**
+git checkout -b branch-name origin/branch-name    //在本地创建和远程分支对应的分
 
-`git rebase rebase`**可以把本地未push的分支提交历史整理成直线**
+git branch --set-upstream branch-name origin/branch-name   //建立本地分支和远程分支的关联
+
+git rebase rebase   //可以把本地未push的分支提交历史整理成直线
+
+git remote   //可以查看关联的远程仓库
+
+git remote -v   //可以查看关联的远程仓库的具体url
+```
 
 **注意**
 
 当git无法自动合并冲突时，应先解决冲突再提交，再合并**git status**查看冲突的文件**git log --graph**可以看到分支合并图
 
-### 5.使用git回滚版本
+### 3.使用git回滚版本
 
 ```
 //查看每次操作对于的commitid的账号
@@ -87,16 +150,9 @@ git log --oneline
 git revert commitid
 ```
 
-### git从github上面拉取更新代码
-
-```
-git remote   //可以查看关联的远程仓库
-git remote -v   //可以查看关联的远程仓库的具体url
-```
 
 
-
-# 2019-4-23-git需要掌握的知识
+# 
 
 要掌握的问题：
 
