@@ -149,14 +149,3 @@ git log --oneline
 //git revert命令是撤销某次操作，而在此次操作之前和之后的提交记录都会保留
 git revert commitid
 ```
-
-
-
-# 
-
-要掌握的问题：
-
-- 什么是Git以及Git的工作原理
-- Git的常用命令Best Practise（避坑教学）
-- Git冲突是怎么引起的，如何解决
-- Git flow规范团队git使用教程
